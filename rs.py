@@ -17,7 +17,7 @@ def main(argv):
       for opt, arg in opts:
          if opt in ("-h", "--help"):
             print 'rs [options]... <source> <dest> [regex]...\n'
-            print 'Example:  rs.py src/%1/to/%2/path /destination/path %1="/.*/" %2="/(path(s?))/"\n'
+            print 'Example:  rs src/%1/to/%2/path /destination/path %1="/.*/" %2="/(path(s?))/"\n'
             print '[options]'
             print '  -f,   --force        Force override an existing file'
             print '  -P,   --pysical      Make hard links directly to symbolic links'

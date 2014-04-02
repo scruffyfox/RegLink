@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, getopt
+import sys, getopt, re, os
 
 VERSION = "0.1"
 
@@ -9,7 +9,7 @@ def main(argv):
       error()
 
    try:
-      opts, args = getopt.getopt(argv, "hf:P:v:", ["help", "force", "phsyical", "verbose", "version"])
+      opts, args = getopt.getopt(argv, "hfPv", ["help", "force", "phsyical", "verbose", "version"])
    except getopt.GetoptError:
       error()
 
@@ -29,6 +29,27 @@ def main(argv):
          elif opt in ("--version"):
             print 'Version %s' % VERSION
 
+      # cd into each path segment and build a full list of matching paths
+      pathSource = args[0]
+      destPath = args[1]
+      regexParts = args[2:]
+      pathParts = pathSource.split('/')
+
+      builtPaths = []
+
+      pattern = re.compile("\%(.*)")
+
+      lastPath = ""
+      for part in pathParts:
+         print lastPath
+
+         if pattern.match(part) != None:
+            print '%s' % os.listdir(lastPath)
+         else:
+            lastPath = lastPath + part + "/"
+
+      print '======================'
+      print 'pathSource %s\ndestPath %s\nregexParts %s' % (pathSource, destPath, regexParts)
       print 'options %s' % (opts)
       print 'args %s' % (args)
    else:

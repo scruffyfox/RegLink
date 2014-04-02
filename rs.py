@@ -25,6 +25,8 @@ def main(argv):
             print '  --version            Outputs version information and exit\n'
             print '[regex] use $n to reference regex strings in your <source> path'
             print '  $n "regex"'
+         elif opt in ("--version"):
+            print 'Version %s' % VERSION
    else:
       print 'Unrecognised option(s) %s' % (args)
       sys.exit(2)

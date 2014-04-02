@@ -3,8 +3,15 @@
 import sys, getopt, re, os
 
 VERSION = "0.1"
+pathSource = ""
+destPath = ""
+regexParts = []
+pathParts = []
+builtPaths = []
 
 def main(argv):
+   global pathSource, destPath, regexParts, pathParts, builtPaths
+
    if len(argv) < 1:
       error()
 
@@ -35,16 +42,13 @@ def main(argv):
       regexParts = args[2:]
       pathParts = pathSource.split('/')
 
-      builtPaths = []
-
       pattern = re.compile("\%(.*)")
 
       lastPath = ""
       for part in pathParts:
-         print lastPath
-
          if pattern.match(part) != None:
-            print '%s' % os.listdir(lastPath)
+            foundParts = findMatchedPaths(lastPath, part)
+
          else:
             lastPath = lastPath + part + "/"
 
@@ -55,6 +59,28 @@ def main(argv):
    else:
       print 'Unrecognised option(s) %s' % (args)
       sys.exit(2)
+
+def findMatchedPaths(path, part):
+   global regexParts
+
+   regexPart = getPartForRegex(part, regexParts)
+   print regexParts
+   paths = []
+
+   if regexPart != None:
+      partPattern = re.compile(regexPart)
+
+      for folder in os.listdir(path):
+         if partPattern.match(folder) != None:
+            paths.append(path + folder)
+
+   return paths
+
+def getPartForRegex(needle, haystack):
+   for hay in haystack:
+      if hay.find(needle) > -1:
+         return hay.split("=")[1]
+   return None
 
 def error():
    print 'rs <source> <dest> [options]'

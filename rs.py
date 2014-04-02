@@ -13,7 +13,7 @@ def main(argv):
    except getopt.GetoptError:
       error()
 
-   if len(opts) > 0:
+   if len(opts) + len(args) > 0:
       for opt, arg in opts:
          if opt in ("-h", "--help"):
             print 'rs [options]... <source> <dest> [regex]...\n'
@@ -27,6 +27,9 @@ def main(argv):
             print '  $n "regex"'
          elif opt in ("--version"):
             print 'Version %s' % VERSION
+
+      print 'options %s' % (opts)
+      print 'args %s' % (args)
    else:
       print 'Unrecognised option(s) %s' % (args)
       sys.exit(2)

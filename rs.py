@@ -62,7 +62,7 @@ def main(argv):
       # loop through our found paths and filter in anything that matches our original sourcePath
       for file in filelist:
          if re.compile(regStr).match(file):
-            os.system('ln %s %s %s' % (optsStr, file, destPath))
+            os.system('ln %s "%s" "%s"' % (optsStr, file, destPath))
 
    else:
       print 'Unrecognised option(s) %s' % (args)

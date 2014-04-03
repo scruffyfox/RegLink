@@ -27,9 +27,8 @@ def main(argv):
             print '[regex] use $n to reference regex strings in your <source> path'
             print '  $n "regex"'
          elif opt in ("--version"):
-            print 'Version %s' % VERSION
+            print 'version %s by Callum Taylor 2014' % VERSION
 
-      # cd into each path segment and build a full list of matching paths
       pathSource = args[0]
       destPath = args[1]
       regexParts = args[2:]
@@ -39,6 +38,8 @@ def main(argv):
       globPathParts = []
       regexPathParts = []
 
+      # build a list of path parts with the regex in place of its corrisponding %n 
+      # also build a list of path parts with a glob [*] in place of %n
       for pathPart in pathParts:
          if regexPartPattern.match(pathPart) != None:
             regexPathParts.append(getPartForRegex(pathPart, regexParts))
@@ -50,6 +51,7 @@ def main(argv):
       regStr = '%s' % ("/".join(regexPathParts))
       filelist = glob.glob(r'%s' % ("/".join(globPathParts)))
       
+      # loop through our found paths and filter in anything that matches our original sourcePath
       for f in filelist:
          if re.compile(regStr).match(f):
             print f

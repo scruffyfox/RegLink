@@ -9,7 +9,7 @@ def main(argv):
       error()
 
    try:
-      opts, args = getopt.getopt(argv, "hfPv", ["help", "force", "phsyical", "verbose", "version"])
+      opts, args = getopt.getopt(argv, "hfsPv", ["help", "force", "symbolic", "phsyical", "verbose", "version"])
    except getopt.GetoptError:
       error()
 
@@ -20,14 +20,17 @@ def main(argv):
             print 'Example:  rs src/%1/to/%2/path /destination/path %1="/.*/" %2="/(path(s?))/"\n'
             print '[options]'
             print '  -f,   --force        Force override an existing file'
+            print '  -s,   --symbolic     Create a symbolic link to a file'
             print '  -P,   --pysical      Make hard links directly to symbolic links'
             print '  -v,   --verbose      Print name of each linked file'
             print '  --help               Display this menu'
             print '  --version            Outputs version information and exit\n'
-            print '[regex] use $n to reference regex strings in your <source> path'
-            print '  $n "regex"'
+            print '[regex] use %n to reference regex strings in your <source> path'
+            print '  %n "regex"\n'
+            sys.exit(2)
          elif opt in ("--version"):
             print 'version %s by Callum Taylor 2014' % VERSION
+            sys.exit(2)
 
       pathSource = args[0]
       destPath = args[1]

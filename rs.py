@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, getopt, re, os
+import sys, getopt, re, os, glob, fnmatch
 
 VERSION = "0.1"
 pathSource = ""
@@ -43,14 +43,23 @@ def main(argv):
       pathParts = pathSource.split('/')
 
       pattern = re.compile("\%(.*)")
+      globPathParts = []
+      regexPathParts = []
 
-      lastPath = ""
       for part in pathParts:
          if pattern.match(part) != None:
-            foundParts = findMatchedPaths(lastPath, part)
-
+            regexPathParts.append(getPartForRegex(part, regexParts))
+            globPathParts.append('*')
          else:
-            lastPath = lastPath + part + "/"
+            regexPathParts.append(part)
+            globPathParts.append(part)
+
+      regStr = '%s' % ("/".join(regexPathParts))
+      filelist = glob.glob(r'%s' % ("/".join(globPathParts)))
+      
+      for f in filelist:
+         if re.compile(regStr).match(f):
+            print f
 
       print '======================'
       print 'pathSource %s\ndestPath %s\nregexParts %s' % (pathSource, destPath, regexParts)
@@ -59,22 +68,6 @@ def main(argv):
    else:
       print 'Unrecognised option(s) %s' % (args)
       sys.exit(2)
-
-def findMatchedPaths(path, part):
-   global regexParts
-
-   regexPart = getPartForRegex(part, regexParts)
-   print regexParts
-   paths = []
-
-   if regexPart != None:
-      partPattern = re.compile(regexPart)
-
-      for folder in os.listdir(path):
-         if partPattern.match(folder) != None:
-            paths.append(path + folder)
-
-   return paths
 
 def getPartForRegex(needle, haystack):
    for hay in haystack:

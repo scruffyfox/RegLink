@@ -2,7 +2,7 @@
 
 import sys, getopt, re, os, glob
 
-VERSION = "0.1"
+VERSION = "1.0"
 
 def main(argv):
    if len(argv) < 1:

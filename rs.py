@@ -16,7 +16,7 @@ def main(argv):
    if len(opts) + len(args) > 0:
       for opt, arg in opts:
          if opt in ("-h", "--help"):
-            print 'rs [options]... <source> <dest> [regex]...\n'
+            print 'rs [-fsPv, --force --symbolic --physical --verbose --help --version] <source> <dest> [regex]...\n'
             print 'Example:  rs src/%1/to/%2/path /destination/path %1="/.*/" %2="/(path(s?))/"\n'
             print '[options]'
             print '  -f,   --force        Force override an existing file'
@@ -55,14 +55,9 @@ def main(argv):
       filelist = glob.glob(r'%s' % ("/".join(globPathParts)))
       
       # loop through our found paths and filter in anything that matches our original sourcePath
-      for f in filelist:
-         if re.compile(regStr).match(f):
-            print f
-
-      print '======================'
-      print 'pathSource %s\ndestPath %s\nregexParts %s' % (pathSource, destPath, regexParts)
-      print 'options %s' % (opts)
-      print 'args %s' % (args)
+      for file in filelist:
+         if re.compile(regStr).match(file):
+            print 'ln %s %s %s' % (" ".join(str(i[0]) for i in opts), file, destPath)
    else:
       print 'Unrecognised option(s) %s' % (args)
       sys.exit(2)

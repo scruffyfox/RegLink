@@ -1,17 +1,10 @@
 #!/usr/bin/python
 
-import sys, getopt, re, os, glob, fnmatch
+import sys, getopt, re, os, glob
 
 VERSION = "0.1"
-pathSource = ""
-destPath = ""
-regexParts = []
-pathParts = []
-builtPaths = []
 
 def main(argv):
-   global pathSource, destPath, regexParts, pathParts, builtPaths
-
    if len(argv) < 1:
       error()
 
@@ -42,17 +35,17 @@ def main(argv):
       regexParts = args[2:]
       pathParts = pathSource.split('/')
 
-      pattern = re.compile("\%(.*)")
+      regexPartPattern = re.compile("\%(.*)")
       globPathParts = []
       regexPathParts = []
 
-      for part in pathParts:
-         if pattern.match(part) != None:
-            regexPathParts.append(getPartForRegex(part, regexParts))
+      for pathPart in pathParts:
+         if regexPartPattern.match(pathPart) != None:
+            regexPathParts.append(getPartForRegex(pathPart, regexParts))
             globPathParts.append('*')
          else:
-            regexPathParts.append(part)
-            globPathParts.append(part)
+            regexPathParts.append(pathPart)
+            globPathParts.append(pathPart)
 
       regStr = '%s' % ("/".join(regexPathParts))
       filelist = glob.glob(r'%s' % ("/".join(globPathParts)))

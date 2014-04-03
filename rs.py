@@ -75,7 +75,7 @@ def getPartForRegex(needle, haystack):
    return None
 
 def error():
-   print 'rs <source> <dest> [options]'
+   print 'Usage: rs [-fsPv, --force --symbolic --physical --verbose --help --version] <source> <dest> [regex]...\n'
    sys.exit(2)
 
 if __name__ == "__main__":
